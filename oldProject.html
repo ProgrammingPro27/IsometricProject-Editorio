@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <title>Editorio</title>
+</head>
+<body>
+    <div id="optionPartsMenu" style = "display: none;"></div>
+    <div id="menu" style = "display: none;">
+        <img id="logo" src="programLogo.png" alt="editorio">
+        <button class="mainMenuOptionButtons" onclick="showOptionsMap()">MAP OPTIONS</button>
+        <button class="mainMenuOptionButtons" onclick="showOptions()">TILE OPTIONS</button>
+        <button class="mainMenuOptionButtons" disabled>USER GUIDE</button>
+        <div id="mapOptions" style = "display: none;"></div>
+        <div id="tileOptions" style = "display: none;"></div>
+        <div id="userGuide" style = "display: none;"></div>
+    </div>
+    <canvas id="canvas"></canvas>
+    <div id="controlPanelButton" onclick="showControlPanel()"></div>
+    <div id="controlWindowButton" onclick="showControlWindow()"></div>
+    <script src="Perlin.js"></script>
+    <script src="oldSet.js"></script>
+    <script src="contentMethods.js"></script>
+</body>
+</html>
