@@ -54,59 +54,38 @@ window.onload = function () {
     mapOptions.addEventListener("click", addCommandV2);
     function addCommandV2(e) {
         if (e.target.tagName === "BUTTON") {
-            
             if (mapOptionsWindow.querySelector(`#${e.target.innerHTML}`) !== null) {
                 alert("Element has already been added.");
-            } else {              
+            } else {
                 mapOptionsWindow.innerHTML += mapOperations[e.target.innerHTML]();
             }
-
         }
     }
 }
 
 //add the menu window and assign every operation to the name of the button
-for (let i = 0; i < gameObject.operations.length; i++) {
-    let button = document.createElement("button");
-    button.className = "mainMenuOptionButtons"
-    button.innerHTML = gameObject.operations[i]
-    tileOptions.appendChild(button)
-}
-
-for (let i = 0; i < Object.keys(mapOperations).length; i++) {
-    let button = document.createElement("button");
-    button.className = "mainMenuOptionButtons";
-    button.innerHTML = Object.keys(mapOperations)[i]
-    mapOptions.appendChild(button)
-}
-
-//show and hide the menu
-function showControlPanel() {
-    if (menu.style.display !== "flex") {
-        menu.style.display = "flex";
-    } else {
-        menu.style.display = "none";
+function addOptionButtons(operationGroup, menu) {
+    for (let i = 0; i < operationGroup.length; i++) {
+        let button = document.createElement("button");
+        button.className = "mainMenuOptionButtons";
+        button.innerHTML = operationGroup[i];
+        menu.appendChild(button);
     }
-}
+};
 
-function showOptions() {
-    tileOptions.style.display = "flex";
-}
+addOptionButtons(gameObject.operations, tileOptions);
+addOptionButtons(Object.keys(mapOperations), mapOptions);
 
-function showOptionsMap() {
-    mapOptions.style.display = "flex";
-}
-
-function showControlWindow() {
-    mapOptionsWindow.style.display = "flex";
-}
+function showElement(el) {
+    el.style.display = "flex";
+};
 
 menu.addEventListener("mouseleave", function () {
     menu.style.display = "none";
     tileOptions.style.display = "none";
     mapOptions.style.display = "none";
-})
+});
 
 mapOptionsWindow.addEventListener("mouseleave", function () {
     mapOptionsWindow.style.display = "none";
-})
+});
