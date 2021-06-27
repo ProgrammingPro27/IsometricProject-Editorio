@@ -6,6 +6,7 @@ let height = canvas.height = window.innerHeight;
 let gameObject = {
     key: undefined,
     eventToPut: undefined,
+    isScrolling:undefined,
     rows: 0,
     cols: 0,
     mouseCoordinates: [],
@@ -15,9 +16,10 @@ let gameObject = {
     leftColor: "#808080",
     rightColor: "#A9A9A9",
     topColor: "#909090",
-    operations: ["removeTile", "manipulate", "addUpperLevel", "colorise"],
+    operations: ["removeTile", "increaseSize", "addUpperLevel", "colorise"],
     x: window.innerWidth / 2,
-    y: window.innerHeight / 4
+    y: window.innerHeight / 4,
+    activateStroke:true,
 }
 
 let map = [];
@@ -64,7 +66,9 @@ Iso3d.prototype.drawCube = function () {
         ctx.closePath();
         ctx.fillStyle = sides[i].color;
         ctx.fill();
-        ctx.stroke();
+        if(gameObject.activateStroke === true){
+            ctx.stroke();
+        }
     }
     return this;
 }
@@ -92,7 +96,7 @@ Iso3d.prototype.collision = function () {
     }
 
 }
-Iso3d.prototype.manipulate = function () {
+Iso3d.prototype.increaseSize = function () {
     let value = this;
     if (value.flag === true) {
         canvas.onclick = function () {
@@ -187,12 +191,12 @@ function drawIsometricTileMap(mapX, mapY) {
             isoCube.wy = gameObject.tileH;
             isoCube.h = gameObject.tileZ;
             isoCube.level = 0;
-            gameObject.x += gameObject.tileW + 0.5;
-            gameObject.y += gameObject.tileH / 2 + 0.5;
+            gameObject.x += gameObject.tileW;
+            gameObject.y += gameObject.tileH / 2;
             mapRow.push(isoCube);
         }
-        oriX -= gameObject.tileW + 0.5;
-        oriY += gameObject.tileH / 2 + 0.5;
+        oriX -= gameObject.tileW;
+        oriY += gameObject.tileH / 2;
         gameObject.x = oriX;
         gameObject.y = oriY;
         map.push(mapRow);
@@ -275,6 +279,7 @@ function createStackedTiles(neededAmountOfTiles, baseTile) {
     let height = 20;
     for (let i = 0; i < neededAmountOfTiles; i++) {
         let copy = Object.assign(new Iso3d(), baseTile);
+        //from here you can add color based on height leveling
         copy.level = 1;
         copy.y -= height;
         height += 20;
@@ -454,6 +459,10 @@ function performPerlinMapUpdate(index, value) {
         let parts = [Number(values.upCoord.value), Number(values.downCoord.value), values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers];
         parts[index] = Number(value.value);
         values.updatePerlinValues(...parts);
+        gameObject.activateStroke = false;
+        gameObject.isScrolling = setTimeout(function() {
+            gameObject.activateStroke = true;
+        }, 100);
     }
     catch (err) {
         alert("Invalid Operation!\nMake sure PerlinMapRowsAndColumns, GridSize, Resolution and GroundLayers are included!");
@@ -482,14 +491,19 @@ window.addEventListener("keypress", function (e) {
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
             switch (e.code) {
-                case "KeyW": map[i][j].y += 10; break;
-                case "KeyS": map[i][j].y -= 10; break;
-                case "KeyA": map[i][j].x += 10; break;
-                case "KeyD": map[i][j].x -= 10; break;
+                case "KeyW": map[i][j].y += 10;gameObject.activateStroke = false; break;
+                case "KeyS": map[i][j].y -= 10;gameObject.activateStroke = false; break;
+                case "KeyA": map[i][j].x += 10;gameObject.activateStroke = false; break;
+                case "KeyD": map[i][j].x -= 10;gameObject.activateStroke = false; break;
             }
         }
     }
 })
+
+window.addEventListener("keyup", function () {
+    gameObject.activateStroke = true;
+});
+
 
 function zoom(clicks) {
     let scaleFactor = 1.1;
@@ -497,13 +511,19 @@ function zoom(clicks) {
     let factor = Math.pow(scaleFactor, clicks);
     ctx.scale(factor, factor);
     ctx.translate(-gameObject.mouseCoordinates[0], -gameObject.mouseCoordinates[1]);
-}
+};
 
 let handleScroll = function (evt) {
     let delta = evt.wheelDelta ? evt.wheelDelta / 40 : evt.detail ? -evt.detail : 0;
     if (delta) zoom(delta);
+    gameObject.activateStroke = false;
+
+    window.clearTimeout( gameObject.isScrolling );
+    gameObject.isScrolling = setTimeout(function() {
+        gameObject.activateStroke = true;
+	}, 100);
+    
     return evt.preventDefault() && false;
 };
 
-canvas.addEventListener('DOMMouseScroll', handleScroll, false);
 canvas.addEventListener('mousewheel', handleScroll, false);
