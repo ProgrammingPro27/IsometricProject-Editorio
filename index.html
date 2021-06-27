@@ -12,16 +12,16 @@
     <div id="optionPartsMenu" style = "display: none;"></div>
     <div id="menu" style = "display: none;">
         <img id="logo" src="programLogo.png" alt="editorio">
-        <button class="mainMenuOptionButtons" onclick="showOptionsMap()">MAP OPTIONS</button>
-        <button class="mainMenuOptionButtons" onclick="showOptions()">TILE OPTIONS</button>
+        <button class="mainMenuOptionButtons" onclick="showElement(document.getElementById('mapOptions'))">MAP OPTIONS</button>
+        <button class="mainMenuOptionButtons" onclick="showElement(document.getElementById('tileOptions'))">TILE OPTIONS</button>
         <button class="mainMenuOptionButtons" disabled>USER GUIDE</button>
         <div id="mapOptions" style = "display: none;"></div>
         <div id="tileOptions" style = "display: none;"></div>
         <div id="userGuide" style = "display: none;"></div>
     </div>
     <canvas id="canvas"></canvas>
-    <div id="controlPanelButton" onclick="showControlPanel()"></div>
-    <div id="controlWindowButton" onclick="showControlWindow()"></div>
+    <div id="controlPanelButton" onclick="showElement(document.getElementById('menu'))"></div>
+    <div id="controlWindowButton" onclick="showElement(document.getElementById('optionPartsMenu'))"></div>
     <script src="Perlin.js"></script>
     <script src="mapScripts.js"></script>
     <script src="contentMethods.js"></script>
