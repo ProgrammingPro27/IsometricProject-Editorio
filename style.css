@@ -2,7 +2,9 @@
     padding:0;
     margin:0;           
 }
-
+body{
+    background-color: #696969;
+}
 ::-webkit-scrollbar {display:none;}
 
 #menu {
@@ -43,8 +45,7 @@
     transition-duration: 0.7s;
 }
 
-#canvas {
-    background-color: grey;
+canvas {
     position: absolute;
     top: 0;
     left: 0;
