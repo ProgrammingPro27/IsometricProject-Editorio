@@ -1,4 +1,6 @@
-function Iso3d(x, y, wx, wy, h, flag) {
+function Iso3d(canvas, ctx, x, y, wx, wy, h, flag) {
+    this.canvas = canvas;
+    this.ctx = ctx;
     this.x = x;
     this.y = y;
     this.wx = wx;
@@ -26,22 +28,22 @@ Iso3d.prototype.drawCube = function (stroke) {
     }];
 
     for (let i = 0; i < sides.length; i++) {
-        ctx.beginPath();
-        ctx.moveTo(...sides[i].moveTo);
+        this.ctx.beginPath();
+        this.ctx.moveTo(...sides[i].moveTo);
         for (let j of sides[i].sides) {
-            ctx.lineTo(...j);
+            this.ctx.lineTo(...j);
         };
-        ctx.closePath();
-        ctx.fillStyle = sides[i].color;
-        ctx.fill();
+        this.ctx.closePath();
+        this.ctx.fillStyle = sides[i].color;
+        this.ctx.fill();
         if (stroke === true) {
-            ctx.stroke();
+            this.ctx.stroke();
         };
     };
     return this;
 };
 Iso3d.prototype.collision = function (map, mouseX, mouseY) {
-    if (ctx.isPointInPath(mouseX, mouseY)) {
+    if (this.ctx.isPointInPath(mouseX, mouseY)) {
         this.flag = true;
         for (let i = 0; i < map.length; i++) {
             let index = map[i].indexOf(this);
@@ -50,7 +52,7 @@ Iso3d.prototype.collision = function (map, mouseX, mouseY) {
                 this.cellCoordinate.col = index;
             };
         };
-        canvas.style.cursor = "pointer";
+        this.canvas.style.cursor = "pointer";
         return this;
     } else {
         this.flag = false;
@@ -62,7 +64,7 @@ Iso3d.prototype.collision = function (map, mouseX, mouseY) {
 Iso3d.prototype.increaseSize = function () {
     let value = this;
     if (value.flag === true) {
-        canvas.onclick = function () {
+        this.canvas.onclick = function () {
             if (value.flag === true) {
                 value.h += 5;
             };
@@ -73,7 +75,7 @@ Iso3d.prototype.increaseSize = function () {
 Iso3d.prototype.removeTile = function (map) {
     let value = this;
     if (value.flag === true) {
-        canvas.onclick = function () {
+        this.canvas.onclick = function () {
             if (value.flag === true) {
                 let i = value.cellCoordinate.row;
                 let j = value.cellCoordinate.col;
@@ -88,11 +90,11 @@ Iso3d.prototype.removeTile = function (map) {
 Iso3d.prototype.addUpperLevel = function (map) {
     let value = this;
     if (value.flag === true) {
-        canvas.onclick = function () {
+        this.canvas.onclick = function () {
             if (value.flag === true) {
                 let i = value.cellCoordinate.row;
                 let j = value.cellCoordinate.col;
-                let isoCube = new Iso3d(map[i][j].x, map[i][j].y - map[i][j].h, gameObject.tileW, gameObject.tileH, gameObject.tileZ);
+                let isoCube = new Iso3d(value.canvas, value.ctx, map[i][j].x, map[i][j].y - map[i][j].h, gameObject.tileW, gameObject.tileH, gameObject.tileZ);
                 if (i !== null && j !== null) {
                     map[i].push(isoCube);
                     map[i] = map[i].sort((a, b) => { return a.x - b.x || b.y - a.y });
@@ -105,7 +107,7 @@ Iso3d.prototype.addUpperLevel = function (map) {
 Iso3d.prototype.colorise = function (key) {
     let value = this;
     if (value.flag === true) {
-        canvas.onclick = function () {
+        this.canvas.onclick = function () {
             let colors = {
                 Digit1: ["#FFFCFC", "#FFFBFB", "#FFFAFA"],//snow Block
                 Digit2: ["#2389da", "#2389da", "#2389da"],//water Block
