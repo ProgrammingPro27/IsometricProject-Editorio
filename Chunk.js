@@ -1,26 +1,21 @@
 function Chunk() {
     this.mapData = {};
 };
-Chunk.prototype.createFlatChunk = function (mapX, mapY, code) {
-    let tileW = 50;
-    let tileH = 50;
-    let tileZ = 20;
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 4;
-    let oriX = window.innerWidth / 2;
-    let oriY = window.innerHeight / 4;
+Chunk.prototype.createFlatChunk = function (canvas, ctx, tileW, tileZ, x, y, mapX, mapY, code) {
+    let oriX = Number(x);
+    let oriY = Number(y);
     let map = [];
 
     for (let i = 0; i < mapX; i++) {
         let mapRow = [];
         for (let j = 0; j < mapY; j++) {
-            let isoCube = new Iso3d(x, y, tileW, tileH, tileZ);
+            let isoCube = new Iso3d(canvas, ctx, x, y, tileW, tileW, tileZ);
             x += tileW;
-            y += tileH / 2;
+            y += tileW / 2;
             mapRow.push(isoCube);
         };
         oriX -= tileW;
-        oriY += tileH / 2;
+        oriY += tileW / 2;
         x = oriX;
         y = oriY;
         map.push(mapRow);
@@ -53,11 +48,12 @@ Chunk.prototype.cleanChunk = function (code) {
     y = window.innerHeight / 4;
     return this;
 };
-Chunk.prototype.createPerlinChunk = function (code, gridSize, resolution, groundLayers) {
-    let perlin = new Perlin();
-    perlin.seed();
+Chunk.prototype.createPerlinChunk = function (perlin, code, gridSize, resolution, groundLayers) {
+    if (resolution < this.mapData[code].length) {
+        resolution = this.mapData[code].length
+        alert("Invalid resoulution, increase the resolution in order to continue!")
+    }
     let map = [];
-    resolution = Math.abs(resolution);
     for (let y = 0; y < gridSize; y += gridSize / resolution) {
         let row = [];
         for (let x = 0; x < gridSize; x += gridSize / resolution) {
@@ -80,7 +76,5 @@ Chunk.prototype.createPerlinChunk = function (code, gridSize, resolution, ground
             };
         };
     };
-
-    this.mapData[code].forEach(x => x.sort((a, b) => { return a.x - b.x || b.y - a.y }));
     return this;
 };
