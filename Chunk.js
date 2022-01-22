@@ -48,33 +48,27 @@ Chunk.prototype.cleanChunk = function (code) {
     y = window.innerHeight / 4;
     return this;
 };
-Chunk.prototype.createPerlinChunk = function (perlin, code, gridSize, resolution, groundLayers) {
+
+let flying = 0;
+let flying2 = 0;
+
+Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers) {
     if (resolution < this.mapData[code].length) {
         resolution = this.mapData[code].length
         alert("Invalid resoulution, increase the resolution in order to continue!")
     }
-    let map = [];
-    for (let y = 0; y < gridSize; y += gridSize / resolution) {
-        let row = [];
-        for (let x = 0; x < gridSize; x += gridSize / resolution) {
-            let v = parseInt((perlin.get(x, y) / 2 + groundLayers) * 55);//default 255     
-            row.push(v);
+    let yoff = flying;
+    for (let y = 0; y < size; y++) {
+        let xoff = flying2;
+        for (let x = 0; x < size; x++) {
+            let v = parseInt((perlin.get(xoff, yoff) + groundLayers) * 1255);//default 255     
+            if (v < 0) {
+                v = 0;
+            }
+            this.mapData[code][x][y].h += v;
+            xoff += gridSize / resolution;
         };
-        map.push(row);
-    };
-
-    if (map.length >= this.mapData[code].length) {
-        for (let i = 0; i < this.mapData[code].length; i++) {
-            for (let j = 0; j < this.mapData[code][i].length; j++) {
-                this.mapData[code][i][j].h *= map[i][j];
-            };
-        };
-    } else {
-        for (let i = 0; i < map.length; i++) {
-            for (let j = 0; j < map[i].length; j++) {
-                this.mapData[code][i][j].h *= map[i][j];
-            };
-        };
+        yoff += gridSize / resolution;
     };
     return this;
 };
