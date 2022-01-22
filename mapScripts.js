@@ -45,7 +45,7 @@ function updateMap(command) {
         };
         let comb = {
             c1: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.flatCoords,values.flatCoords,"0,0")`,
-            c2: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers)`
+            c2: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers)`
         };
         eval(comb[command]);
         updateStroke();
