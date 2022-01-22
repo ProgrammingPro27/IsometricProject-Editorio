@@ -53,10 +53,9 @@ let flying = 0;
 let flying2 = 0;
 
 Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers) {
-    if (resolution < this.mapData[code].length) {
-        resolution = this.mapData[code].length
-        alert("Invalid resoulution, increase the resolution in order to continue!")
-    }
+    if ((gridSize / resolution) == gridSize || gridSize == resolution || (gridSize % resolution) == 0) {
+        resolution = this.mapData[code].length;       
+    };
     let yoff = flying;
     for (let y = 0; y < size; y++) {
         let xoff = flying2;
