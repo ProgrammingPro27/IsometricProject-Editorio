@@ -37,7 +37,7 @@ let mapOperations = {
     },
     "GroundLayers": () => {
         let optionFragment = `<div class = "part" id ="GroundLayers" >`;
-        optionFragment += `<label for="groundLayers">Ground Layers: </label><input  type="number" id="groundLayers" name="groundLayers" min="0.3" value = "0.5" step = "0.1" oninput="updateMap('c2')">`;
+        optionFragment += `<label for="groundLayers">Ground Layers: </label><input  type="number" id="groundLayers" name="groundLayers" min="0.1" value = "0.5" step = "0.1" oninput="updateMap('c2')">`;
         optionFragment += `<div class = "closeButton" onclick="closeSegment(this)">&#10006;</div></div>`;
         return optionFragment;
     }
