@@ -42,10 +42,11 @@ function updateMap(command) {
             fieldValueGridSize: Number(document.getElementById("gridSize").value),
             fieldValueResolution: Number(document.getElementById("resolution").value),
             fieldValueGroundLayers: Number(document.getElementById("groundLayers").value),
+            fieldValueHeightLimit: Number(document.getElementById("heightLimit").value),
         };
         let comb = {
             c1: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.flatCoords,values.flatCoords,"0,0")`,
-            c2: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers)`
+            c2: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers,values.fieldValueHeightLimit)`
         };
         eval(comb[command]);
         updateStroke();
@@ -127,7 +128,7 @@ window.addEventListener("resize", function () {
 });
 
 window.addEventListener("keypress", function (e) {
-    if (chunk.mapData["0,0"].length !== 0) {
+    if (chunk.mapData["0,0"] && chunk.mapData["0,0"].length !== 0) {
         for (let i = 0; i < chunk.mapData["0,0"].length; i++) {
             for (let j = 0; j < chunk.mapData["0,0"][i].length; j++) {
                 let currEl = chunk.mapData["0,0"][i][j];
@@ -135,19 +136,19 @@ window.addEventListener("keypress", function (e) {
                     switch (e.code) {
                         case "KeyW":
                             currEl.y += 10;
-                            gameObject.activateStroke = false
+                            gameObject.activateStroke = false;
                                 ; break;
                         case "KeyS":
                             currEl.y -= 10;
-                            gameObject.activateStroke = false
+                            gameObject.activateStroke = false;
                                 ; break;
                         case "KeyA":
                             currEl.x += 10;
-                            gameObject.activateStroke = false
+                            gameObject.activateStroke = false;
                                 ; break;
                         case "KeyD":
                             currEl.x -= 10;
-                            gameObject.activateStroke = false
+                            gameObject.activateStroke = false;
                                 ; break;
                     }
                 }
