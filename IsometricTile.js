@@ -115,9 +115,11 @@ Iso3d.prototype.colorise = function (key) {
                 Digit4: ["#cabc91", "#dbd1b4", "#d3c7a2"],//sand Block 
                 Digit5: ["#8B4513", "#A0522D", "#6B8E23"]//grass Block 
             };
-            value.leftColor = colors[key][0];
-            value.rightColor = colors[key][1];
-            value.topColor = colors[key][2];
+            if (colors[key]) {
+                value.leftColor = colors[key][0];
+                value.rightColor = colors[key][1];
+                value.topColor = colors[key][2];
+            }
         };
     };
 };
