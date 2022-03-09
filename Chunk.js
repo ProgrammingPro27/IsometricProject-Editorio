@@ -48,18 +48,14 @@ Chunk.prototype.cleanChunk = function (code) {
     y = window.innerHeight / 4;
     return this;
 };
-
-let flying = 0;
-let flying2 = 0;
-
 Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers, heightLimit) {
     if ((gridSize / resolution) == gridSize || gridSize == resolution || (gridSize % resolution) == 0) {
-        resolution = this.mapData[code].length
+        resolution = this.mapData[code].length;
         // alert("Invalid resoulution, increase the resolution in order to continue!")
     }
-    let yoff = flying;
+    let yoff = 0;
     for (let y = 0; y < size; y++) {
-        let xoff = flying2;
+        let xoff = 0;
         for (let x = 0; x < size; x++) {
             let v = parseInt((perlin.get(xoff, yoff) + groundLayers) * heightLimit);//default 255     
             if (v < 0) {
