@@ -127,34 +127,35 @@ window.addEventListener("resize", function () {
     canvas.height = window.innerHeight;
 });
 
-window.addEventListener("keypress", function (e) {
-    if (chunk.mapData["0,0"] && chunk.mapData["0,0"].length !== 0) {
-        for (let i = 0; i < chunk.mapData["0,0"].length; i++) {
-            for (let j = 0; j < chunk.mapData["0,0"][i].length; j++) {
-                let currEl = chunk.mapData["0,0"][i][j];
-                if (currEl) {
-                    switch (e.code) {
-                        case "KeyW":
-                            currEl.y += 10;
-                            gameObject.activateStroke = false;
-                                ; break;
-                        case "KeyS":
-                            currEl.y -= 10;
-                            gameObject.activateStroke = false;
-                                ; break;
-                        case "KeyA":
-                            currEl.x += 10;
-                            gameObject.activateStroke = false;
-                                ; break;
-                        case "KeyD":
-                            currEl.x -= 10;
-                            gameObject.activateStroke = false;
-                                ; break;
-                    }
-                }
-            }
-        }
-    }
-    gameObject.key = e.code;
-    updateStroke();
+window.addEventListener("keydown", function (e) {
+    let values = {
+        flatCoords: Number(document.getElementById("quantity1").value),
+        perlinCoords: Number(document.getElementById("quantity3").value),
+        fieldValueGridSize: Number(document.getElementById("gridSize").value),
+        fieldValueResolution: Number(document.getElementById("resolution").value),
+        fieldValueGroundLayers: Number(document.getElementById("groundLayers").value),
+        fieldValueHeightLimit: Number(document.getElementById("heightLimit").value),
+    };
+    switch (e.code) {
+        case "KeyW":
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying", "-");
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying2", "-");
+            updateStroke();
+            ; break;
+        case "KeyS":
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying", "+");
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying2", "+");
+            updateStroke();
+            ; break;
+        case "KeyA":
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying", "+");
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying2", "-");
+            updateStroke();
+            ; break;
+        case "KeyD":
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying", "-");
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, "flying2", "+");
+            updateStroke();
+            ; break;
+    };
 });
