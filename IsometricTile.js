@@ -119,7 +119,8 @@ Iso3d.prototype.colorise = function (key) {
                 value.leftColor = colors[key][0];
                 value.rightColor = colors[key][1];
                 value.topColor = colors[key][2];
-            }
+            };
         };
     };
+    return this;
 };
