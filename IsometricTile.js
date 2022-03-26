@@ -108,6 +108,7 @@ Iso3d.prototype.colorise = function (key) {
     let value = this;
     if (value.flag === true) {
         this.canvas.onclick = function () {
+         if (value.flag === true) {
             let colors = {
                 Digit1: ["#FFFCFC", "#FFFBFB", "#FFFAFA"],//snow Block
                 Digit2: ["#2389da", "#2389da", "#2389da"],//water Block
@@ -120,6 +121,7 @@ Iso3d.prototype.colorise = function (key) {
                 value.rightColor = colors[key][1];
                 value.topColor = colors[key][2];
             };
+          };
         };
     };
     return this;
