@@ -50,13 +50,12 @@ Chunk.prototype.cleanChunk = function (code) {
     y = window.innerHeight / 4;
     return this;
 };
-Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers, heightLimit, num, op) {
+Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers, heightLimit, num, op, num1, op2) {
     if ((gridSize / resolution) == gridSize || gridSize == resolution || (gridSize % resolution) == 0) {
         resolution = this.mapData[code].length;
-        // alert("Invalid resoulution, increase the resolution in order to continue!")
     }
-    if (num, op) {
-        eval(`this.${num} ${op}= gridSize / resolution`);
+    if (num, op, num1, op2) {
+        eval(`this.${num} ${op}= gridSize / resolution;this.${num1} ${op2}= gridSize / resolution`);
     }
     if (this.mapData[code]) {
         let yoff = this.flying2;
