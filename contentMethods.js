@@ -12,7 +12,7 @@ let mapOperations = {
     },
     "PerlinMapRowsAndColumns": () => {
         let optionFragment = `<div class = "part" id ="PerlinMapRowsAndColumns">`;
-        optionFragment += `<label for="quantity3">Perlin Map Size</label><input  type="range" id="quantity3" name="quantity3" min="1" max="50" value = "1" oninput="updateMap('c2')">`;
+        optionFragment += `<label for="quantity3">Perlin Map Size</label><input  type="range" id="quantity3" name="quantity3" min="1" max="50" value = "1" oninput="updateMap('c3')">`;
         return optionFragment;
     },
     "GridSize": () => {
