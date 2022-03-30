@@ -50,9 +50,6 @@ function updateMap(command) {
         if(command === "c1"){
             gameObject.flatChunk = false
             chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.flatCoords,values.flatCoords,"0,0")
-        }else if(command === "c2"){
-            gameObject.flatChunk = true
-            chunk.createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers,values.fieldValueHeightLimit)
         }else{
             gameObject.flatChunk = true
             chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers,values.fieldValueHeightLimit)
