@@ -16,7 +16,8 @@ let gameObject = {
     activateStroke: true,
     oldX: 0,
     oldY: 0,
-    button: false
+    button: false,
+    flatChunk: false
 };
 
 function updateStroke() {
@@ -34,7 +35,7 @@ function returnParameters() {
         fieldValueGridSize: Number(document.getElementById("gridSize").value),
         fieldValueResolution: Number(document.getElementById("resolution").value),
         fieldValueGroundLayers: Number(document.getElementById("groundLayers").value),
-        fieldValueHeightLimit: Number(document.getElementById("heightLimit").value),
+        fieldValueHeightLimit: Number(document.getElementById("heightLimit").value)
     };
 };
 
@@ -46,6 +47,11 @@ perlin.seed();
 function updateMap(command) {
     try {
         let values = returnParameters();
+        if(command === "c1"){
+            gameObject.flatChunk = false
+        }else{
+            gameObject.flatChunk = true
+        }
         let comb = {
             c1: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.flatCoords,values.flatCoords,"0,0")`,
             c2: `chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers,values.fieldValueHeightLimit)`
@@ -114,21 +120,23 @@ window.addEventListener("resize", function () {
 });
 
 window.addEventListener("keydown", function (e) {
-    let values = returnParameters();
-    switch (e.code) {
-        case "KeyW":
-            updatePosition(values, "flying", "-", "flying2", "-");
-            ; break;
-        case "KeyS":
-            updatePosition(values, "flying", "+", "flying2", "+");
-            ; break;
-        case "KeyA":
-            updatePosition(values, "flying", "+", "flying2", "-");
-            ; break;
-        case "KeyD":
-            updatePosition(values, "flying", "-", "flying2", "+");
-            ; break;
+    if (gameObject.flatChunk === true) {
+        let values = returnParameters();
+        switch (e.code) {
+            case "KeyW":
+                updatePosition(values, "flying", "-", "flying2", "-");
+                ; break;
+            case "KeyS":
+                updatePosition(values, "flying", "+", "flying2", "+");
+                ; break;
+            case "KeyA":
+                updatePosition(values, "flying", "+", "flying2", "-");
+                ; break;
+            case "KeyD":
+                updatePosition(values, "flying", "-", "flying2", "+");
+                ; break;
+        };
+        gameObject.key = e.code;
+        updateStroke();
     };
-    gameObject.key = e.code;
-    updateStroke();
 });
