@@ -57,7 +57,7 @@ Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, reso
     if (num, op, num1, op2) {
         eval(`this.${num} ${op}= gridSize / resolution;this.${num1} ${op2}= gridSize / resolution`);
     }
-    if (this.mapData[code]) {
+    //if (this.mapData[code]) {
         let yoff = this.flying2;
         for (let y = 0; y < size; y++) {
             let xoff = this.flying;
@@ -71,6 +71,6 @@ Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, reso
             };
             yoff += gridSize / resolution;
         };
-    };
+    //};
     return this;
 };
