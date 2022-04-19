@@ -1,5 +1,4 @@
 let menu = document.getElementById("menu");
-let tileOptions = document.getElementById("tileOptions");
 let mapOptionsWindow = document.getElementById("optionPartsMenu");
 
 let operations = ["removeTile", "increaseSize", "addUpperLevel", "colorise"];
@@ -7,12 +6,12 @@ let operations = ["removeTile", "increaseSize", "addUpperLevel", "colorise"];
 let mapOperations = {
     "RowsAndColumns": () => {
         let optionFragment = `<div class = "part" id ="RowsAndColumns">`;
-        optionFragment += `<label for="quantity1">Flat Map Size</label><input type="range" id="quantity1" name="quantity1" min="1" max="50" value = "1" oninput="updateMap('c1')">`;
+        optionFragment += `<label for="quantity1">Flat Map Size</label><input type="range" id="quantity1" name="quantity1" min="1" max="50" value = "20" oninput="updateMap('c1')">`;
         return optionFragment;
     },
     "PerlinMapRowsAndColumns": () => {
         let optionFragment = `<div class = "part" id ="PerlinMapRowsAndColumns">`;
-        optionFragment += `<label for="quantity3">Perlin Map Size</label><input  type="range" id="quantity3" name="quantity3" min="1" max="50" value = "1" oninput="updateMap('c2')">`;
+        optionFragment += `<label for="quantity3">Perlin Map Size</label><input  type="range" id="quantity3" name="quantity3" min="1" max="50" value = "20" oninput="updateMap('c2')">`;
         return optionFragment;
     },
     "GridSize": () => {
@@ -38,7 +37,7 @@ let mapOperations = {
 };
 
 window.onload = function () {
-    tileOptions.addEventListener("click", addCommand);
+    menu.addEventListener("click", addCommand);
     function addCommand(e) {
         if (e.target.tagName === "BUTTON") {
             gameObject.eventToPut = e.target.innerHTML;
@@ -59,17 +58,17 @@ function addOptionButtons(operationGroup, menu) {
     };
 };
 
-addOptionButtons(operations, tileOptions);
+addOptionButtons(operations, menu);
 
-function showElement(el) {
+function showElement(button, el) {
+    button.style.display = "none"
     el.style.display = "flex";
 };
 
-menu.addEventListener("mouseleave", function () {
-    menu.style.display = "none";
-    tileOptions.style.display = "none";
-});
-
-mapOptionsWindow.addEventListener("mouseleave", function () {
-    mapOptionsWindow.style.display = "none";
-});
+[menu, mapOptionsWindow].forEach(el => {
+    el.addEventListener("mouseleave", function () {
+        el.style.display = "none";
+        document.getElementById('controlPanelButton').style.display = "block";
+        document.getElementById('controlWindowButton').style.display = "block";
+    });
+})
