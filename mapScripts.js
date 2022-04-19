@@ -47,12 +47,12 @@ perlin.seed();
 function updateMap(command) {
     try {
         let values = returnParameters();
-        if(command === "c1"){
+        if (command === "c1") {
             gameObject.flatChunk = false
-            chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.flatCoords,values.flatCoords,"0,0")
-        }else{
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0")
+        } else {
             gameObject.flatChunk = true
-            chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords,perlin,"0,0",values.fieldValueGridSize,values.fieldValueResolution,values.fieldValueGroundLayers,values.fieldValueHeightLimit)
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit)
         }
         updateStroke();
     } catch (err) {
@@ -96,8 +96,32 @@ function onmousewheel(event) {
 }
 
 function updatePosition(values, num, val, num1, val2) {
-    chunk.createFlatChunk(canvas,ctx,gameObject.tileW,gameObject.tileZ,window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords,values.perlinCoords,"0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, num, val, num1, val2);
+    chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, num, val, num1, val2);
     gameObject.activateStroke = false;
+}
+
+
+let opacity = 0;
+let size = 200;
+let img = new Image()
+img.src = "./newLogo.png"
+
+function introAnimation() {
+    if (opacity < 1) {
+        if (size <= 500) {
+            opacity += 0.01
+            ctx.drawImage(img, (width / 2) - size / 2, (height / 2) - size / 2, size, size);
+            size += 3
+        }
+        ctx.globalAlpha = opacity;
+        if (opacity == 1.0000000000000007) {
+            document.getElementById('controlPanelButton').style.display = "block"
+            document.getElementById('controlWindowButton').style.display = "block"
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, 20, 20, "0,0").createPerlinChunk(20, perlin, "0,0", 8, 64, 0.5, 1000)
+            ctx.globalAlpha = 1;
+            console.log(opacity)
+        }
+    }
 }
 
 function render() {
@@ -105,6 +129,9 @@ function render() {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     view.apply();
+
+    introAnimation()
+
     canvas.style.cursor = "default";
     chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
 };
