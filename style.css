@@ -3,7 +3,7 @@
     margin:0;           
 }
 body{
-    background-color: #696969;
+    background-color: #DCDCDC;
 }
 ::-webkit-scrollbar {display:none;}
 
@@ -12,7 +12,6 @@ body{
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: white;
     align-items: flex-start;
     justify-content: flex-start;
     position: absolute;
@@ -20,28 +19,23 @@ body{
     overflow:scroll;
 }
 
-#logo {
-    width: 100%;
-    height: auto;
-}
-
 .mainMenuOptionButtons {
-    width: 100%;
-    font-size: 2vw;
+    width: 70%;
+    font-size: 1.5vw;
     padding: 1.5vw;
     outline:none;
     border:none;
-    background-color: #193047;
-    color: #ffa000;
+    color: white;
+    background-color: #ffa000;
     cursor:pointer;
     font-family: 'Roboto', sans-serif;
     overflow-wrap: break-word;
 }
 
 .mainMenuOptionButtons:hover{
-    background-color: #ffa000;
-    color: white;
-    border-bottom: 1px solid white;
+    background-color: #DCDCDC;
+    color: #ffa000;
+    border-bottom: 1px solid black;;
     transition-duration: 0.7s;
 }
 
@@ -57,10 +51,10 @@ canvas {
     clip-path: polygon(0% 0%, 100% 0, 100% 0, 75% 100%, 0% 100%);
     background-color:#ffa000;
     color: white;
-    width: 5vw;
-    height: 4vh;
-    background-image: url("./icon.png");
-    background-size: 1.5vw;
+    width: 7vw;
+    height: 5vh;
+    background-image: url("./edit\ block.png");
+    background-size: 2.6vw;
     background-repeat: no-repeat;
     background-position: center;
     position: absolute;
@@ -77,11 +71,11 @@ canvas {
     transform: scaleX(-1);
     background-color:#ffa000;
     color: white;
-    width: 5vw;
-    height: 4vh;
+    width: 7vw;
+    height: 5vh;
     float: right;
-    background-image: url("./optionsSet.png");
-    background-size: 1.7vw;
+    background-image: url("./edit\ block\ chunk.png");
+    background-size: 2.4vw;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
@@ -89,17 +83,6 @@ canvas {
 
 #controlWindowButton:hover{
     background-color:white;
-}
-
-#tileOptions{
-    width: 20vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    align-items: flex-start;
-    justify-content: flex-start;
-    position: absolute;
 }
 
 input{
@@ -113,7 +96,6 @@ input{
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #193047;
     align-items: center;
     justify-content: flex-start;
     gap:5px;
