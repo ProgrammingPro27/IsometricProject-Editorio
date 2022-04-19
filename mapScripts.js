@@ -117,7 +117,7 @@ function introAnimation() {
         if (opacity == 1.0000000000000007) {
             document.getElementById('controlPanelButton').style.display = "block"
             document.getElementById('controlWindowButton').style.display = "block"
-            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, 20, 20, "0,0").createPerlinChunk(20, perlin, "0,0", 8, 64, 0.5, 1000)
+            document.getElementById("quantity3").dispatchEvent(new Event("input"))
             ctx.globalAlpha = 1;
         }
     }
