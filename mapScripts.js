@@ -119,7 +119,6 @@ function introAnimation() {
             document.getElementById('controlWindowButton').style.display = "block"
             chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, 20, 20, "0,0").createPerlinChunk(20, perlin, "0,0", 8, 64, 0.5, 1000)
             ctx.globalAlpha = 1;
-            console.log(opacity)
         }
     }
 }
