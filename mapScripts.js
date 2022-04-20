@@ -141,7 +141,9 @@ window.addEventListener("resize", function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
-
+window.addEventListener("keypress", function (e) {
+    gameObject.key = e.code;
+});
 window.addEventListener("keydown", function (e) {
     if (gameObject.flatChunk === true) {
         let values = returnParameters();
@@ -159,7 +161,6 @@ window.addEventListener("keydown", function (e) {
                 updatePosition(values, "flying", "-", "flying2", "+");
                 ; break;
         };
-        gameObject.key = e.code;
         updateStroke();
     };
 });
