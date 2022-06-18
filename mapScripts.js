@@ -9,7 +9,6 @@ let gameObject = {
     isScrolling: undefined,
     mouseCoordinates: [],
     tileW: 50,
-    tileH: 50,
     tileZ: 20,
     x: window.innerWidth / 2,
     y: window.innerHeight / 4,
@@ -17,14 +16,18 @@ let gameObject = {
     oldX: 0,
     oldY: 0,
     button: false,
-    flatChunk: false
+    flatChunk: false,
+    isActive: false
 };
 
 function updateStroke() {
     gameObject.activateStroke = false;
+    gameObject.isActive = true
     window.clearTimeout(gameObject.isScrolling);
     gameObject.isScrolling = setTimeout(function () {
         gameObject.activateStroke = true;
+        gameObject.isActive = false
+        chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
     }, 500);
 };
 
@@ -47,13 +50,19 @@ perlin.seed();
 function updateMap(command) {
     try {
         let values = returnParameters();
-        if (command === "c1") {
+        if (command == "c1") {
             gameObject.flatChunk = false
             chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0")
-        } else {
+        };
+        if (command == "c2") {
+            if (gameObject.flatChunk == true) {
+                chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
+            }
+        };
+        if (command == "c3") {
             gameObject.flatChunk = true
             chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit)
-        }
+        };
         updateStroke();
     } catch (err) {
         alert("Invalid Operation!\nMake sure every map option is included!");
@@ -95,51 +104,42 @@ function onmousewheel(event) {
     e.preventDefault();
 }
 
-function updatePosition(values, num, val, num1, val2) {
-    chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, num, val, num1, val2);
-    gameObject.activateStroke = false;
-}
-
-
-let opacity = 0;
 let size = 200;
 let img = new Image()
 img.src = "./newLogo.png"
-
+let flag = true
 function introAnimation() {
-    if (opacity < 1) {
+    if (flag == true) {
+        requestAnimationFrame(introAnimation);
         if (size <= 500) {
-            opacity += 0.01
+            ctx.reset()
             ctx.drawImage(img, (width / 2) - size / 2, (height / 2) - size / 2, size, size);
-            size += 3
-        }
-        ctx.globalAlpha = opacity;
-        if (opacity == 1.0000000000000007) {
+            size += 4
+        } else {
             document.getElementById('controlPanelButton').style.display = "block"
             document.getElementById('controlWindowButton').style.display = "block"
             document.getElementById("quantity3").dispatchEvent(new Event("input"))
-            ctx.globalAlpha = 1;
+            flag = false
+            render();
         }
-    }
-}
+    };
+};
 
 function render() {
     requestAnimationFrame(render);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    view.apply();
-
-    introAnimation()
-
-    canvas.style.cursor = "default";
-    chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
+    if (gameObject.isActive == true) {
+        ctx.reset()
+        view.apply();
+        chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
+    };
 };
+introAnimation();
 
-render();
 
 window.addEventListener("resize", function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    updateStroke();
 });
 window.addEventListener("keypress", function (e) {
     gameObject.key = e.code;
@@ -147,20 +147,15 @@ window.addEventListener("keypress", function (e) {
 window.addEventListener("keydown", function (e) {
     if (gameObject.flatChunk === true) {
         let values = returnParameters();
-        switch (e.code) {
-            case "KeyW":
-                updatePosition(values, "flying", "-", "flying2", "-");
-                ; break;
-            case "KeyS":
-                updatePosition(values, "flying", "+", "flying2", "+");
-                ; break;
-            case "KeyA":
-                updatePosition(values, "flying", "+", "flying2", "-");
-                ; break;
-            case "KeyD":
-                updatePosition(values, "flying", "-", "flying2", "+");
-                ; break;
+        let action = {
+            "KeyW": ["flying", "-", "flying2", "-"],
+            "KeyS": ["flying", "+", "flying2", "+"],
+            "KeyA": ["flying", "+", "flying2", "-"],
+            "KeyD": ["flying", "-", "flying2", "+"]
         };
-        updateStroke();
+        if (action[e.code]) {
+            chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, ...action[e.code]);
+            updateStroke();
+        };
     };
 });
