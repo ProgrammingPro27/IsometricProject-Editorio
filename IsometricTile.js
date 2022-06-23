@@ -19,11 +19,11 @@ Iso3d.prototype.drawCube = function (stroke) {
         el.ctx.lineTo(p7, p8);
         el.ctx.closePath();
         el.ctx.fillStyle = p9;
-        el.ctx.fill();
         if (stroke === true) {
             el.ctx.stroke();
         };
-    }
+        el.ctx.fill();
+    };
     let f1 = this.width * 0.5, f2 = this.y - this.h, f3 = this.x - this.width, f4 = this.x + this.width, f5 = f2 - f1;
     side(this, this.x, this.y, f3, this.y - f1, f3, f5, this.x, f2 * 1, this.leftColor, stroke);
     side(this, this.x, this.y, f4, this.y - f1, f4, f5, this.x, f2 * 1, this.rightColor, stroke);
