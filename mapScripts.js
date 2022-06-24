@@ -27,6 +27,8 @@ function updateStroke() {
     gameObject.isScrolling = setTimeout(function () {
         gameObject.activateStroke = true;
         gameObject.isActive = false
+        ctx.reset()
+        view.apply();
         chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
     }, 500);
 };
@@ -104,6 +106,7 @@ function onmousewheel(event) {
     e.preventDefault();
 }
 
+
 let size = 200;
 let img = new Image()
 img.src = "./newLogo.png"
@@ -131,6 +134,7 @@ function render() {
         ctx.reset()
         view.apply();
         chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
+        gameObject.isActive = false
     };
 };
 introAnimation();
