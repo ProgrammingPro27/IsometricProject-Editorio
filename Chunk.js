@@ -26,9 +26,9 @@ Chunk.prototype.loadChunk = function (code, mouseX, mouseY, operation, stroke, k
     if (this.mapData[code]) {
         for (let i = 0; i < this.mapData[code].length; i++) {
             for (let j = 0; j < this.mapData[code][i].length; j++) {
-                this.mapData[code][i][j].drawCube(stroke).collision(mouseX, mouseY)
+                this.mapData[code][i][j].drawCube(stroke);
                 if (operation) {
-                    this.mapData[code][i][j].eventInitializer(operation, this.mapData[code], key);
+                    this.mapData[code][i][j].collision(mouseX, mouseY).eventInitializer(operation, this.mapData[code], key);
                 };
             };
         };
