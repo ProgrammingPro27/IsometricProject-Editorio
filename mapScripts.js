@@ -76,6 +76,11 @@ canvas.addEventListener("mousedown", mouseEvent, { passive: true });
 canvas.addEventListener("mouseup", mouseEvent, { passive: true });
 canvas.addEventListener("mouseout", mouseEvent, { passive: true });
 canvas.addEventListener("mousewheel", onmousewheel, false);
+canvas.addEventListener("click", function () {
+    if (gameObject.eventToPut) {
+        gameObject.isActive = true
+    }
+});
 
 function mouseEvent(event) {
     if (event.type === "mousedown") { gameObject.button = true }
