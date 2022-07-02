@@ -36,15 +36,13 @@ Chunk.prototype.loadChunk = function (code, mouseX, mouseY, operation, stroke, k
     return this;
 };
 Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers, heightLimit, num, op, num1, op2) {
-    if ((gridSize / resolution) == gridSize || gridSize == resolution || (gridSize % resolution) == 0) {
-        resolution = this.mapData[code].length;
-    }
+if (resolution != 0) {
     if (num, op) {
         eval(`this.${num} ${op}= gridSize / resolution`);
-    }
+    };
     if (num1, op2) {
         eval(`this.${num1} ${op2}= gridSize / resolution`);
-    }
+    };
     let yoff = this.flying2;
     for (let y = 0; y < size; y++) {
         let xoff = this.flying;
@@ -58,5 +56,6 @@ Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, reso
         };
         yoff += gridSize / resolution;
     };
+ };
     return this;
 };
