@@ -17,20 +17,8 @@ let gameObject = {
     oldY: 0,
     button: false,
     flatChunk: false,
-    isActive: false
-};
-
-function updateStroke() {
-    gameObject.activateStroke = false;
-    gameObject.isActive = true
-    window.clearTimeout(gameObject.isScrolling);
-    gameObject.isScrolling = setTimeout(function () {
-        gameObject.activateStroke = true;
-        gameObject.isActive = false
-        ctx.reset()
-        view.apply();
-        chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
-    }, 500);
+    isActive: false,
+    ind: false
 };
 
 function returnParameters() {
@@ -53,19 +41,19 @@ function updateMap(command) {
     try {
         let values = returnParameters();
         if (command == "c1") {
-            gameObject.flatChunk = false
-            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0")
+            gameObject.flatChunk = false;
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0");
         };
         if (command == "c2") {
             if (gameObject.flatChunk == true) {
                 chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
-            }
+            };
         };
         if (command == "c3") {
-            gameObject.flatChunk = true
-            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit)
+            gameObject.flatChunk = true;
+            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
         };
-        updateStroke();
+        gameObject.isActive = true
     } catch (err) {
         alert("Invalid Operation!\nMake sure every map option is included!");
     };
@@ -78,22 +66,22 @@ canvas.addEventListener("mouseout", mouseEvent, { passive: true });
 canvas.addEventListener("mousewheel", onmousewheel, false);
 canvas.addEventListener("click", function () {
     if (gameObject.eventToPut) {
-        gameObject.isActive = true
-    }
+        gameObject.isActive = true;
+    };
 });
 
 function mouseEvent(event) {
-    if (event.type === "mousedown") { gameObject.button = true }
-    if (event.type === "mouseup" || event.type === "mouseout") { gameObject.button = false }
+    if (event.type === "mousedown") { gameObject.button = true };
+    if (event.type === "mouseup" || event.type === "mouseout") { gameObject.button = false };
     gameObject.oldX = gameObject.mouseCoordinates[0];
     gameObject.oldY = gameObject.mouseCoordinates[1];
     gameObject.mouseCoordinates[0] = event.offsetX;
     gameObject.mouseCoordinates[1] = event.offsetY;
     if (gameObject.button) { // pan
         view.pan({ x: gameObject.mouseCoordinates[0] - gameObject.oldX, y: gameObject.mouseCoordinates[1] - gameObject.oldY });
-        updateStroke();
-    }
-}
+        gameObject.isActive = true;
+    };
+};
 view.setContext(ctx);
 
 function onmousewheel(event) {
@@ -107,48 +95,56 @@ function onmousewheel(event) {
     else {
         view.scaleAt({ x, y }, 1 / 1.1)
     }
-    updateStroke();
+    gameObject.isActive = true
     e.preventDefault();
-}
-
+};
 
 let size = 200;
-let img = new Image()
-img.src = "./newLogo.png"
-let flag = true
+let img = new Image();
+img.src = "./newLogo.png";
+let flag = true;
 function introAnimation() {
     if (flag == true) {
         requestAnimationFrame(introAnimation);
         if (size <= 500) {
-            ctx.reset()
+            ctx.reset();
             ctx.drawImage(img, (width / 2) - size / 2, (height / 2) - size / 2, size, size);
-            size += 4
+            size += 4;
         } else {
-            document.getElementById('controlPanelButton').style.display = "block"
-            document.getElementById('controlWindowButton').style.display = "block"
-            document.getElementById("quantity3").dispatchEvent(new Event("input"))
-            flag = false
+            document.getElementById('controlPanelButton').style.display = "block";
+            document.getElementById('controlWindowButton').style.display = "block";
+            document.getElementById("quantity3").dispatchEvent(new Event("input"));
+            flag = false;
             render();
-        }
+        };
     };
+};
+
+function draw() {
+    gameObject.activateStroke = gameObject.ind;
+    ctx.reset();
+    view.apply();
+    chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
 };
 
 function render() {
     requestAnimationFrame(render);
     if (gameObject.isActive == true) {
-        ctx.reset()
-        view.apply();
-        chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
+        gameObject.ind = false;
+        draw();
+        window.clearTimeout(gameObject.isScrolling);
+        gameObject.ind = true
+        gameObject.isScrolling = setTimeout(draw, 500);
         gameObject.isActive = false
     };
 };
-introAnimation();
 
+introAnimation();
 
 window.addEventListener("resize", function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    updateStroke();
+    gameObject.isActive = true
 });
 window.addEventListener("keypress", function (e) {
     gameObject.key = e.code;
@@ -164,7 +160,7 @@ window.addEventListener("keydown", function (e) {
         };
         if (action[e.code]) {
             chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, ...action[e.code]);
-            updateStroke();
+            gameObject.isActive = true
         };
     };
 });
