@@ -144,13 +144,12 @@ introAnimation();
 window.addEventListener("resize", function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    gameObject.isActive = true
+    gameObject.isActive = true;
 });
-window.addEventListener("keypress", function (e) {
-    gameObject.key = e.code;
-});
+
 window.addEventListener("keydown", function (e) {
     if (gameObject.flatChunk == true) {
+        gameObject.key = e.code;
         let action = {
             "KeyW": ["flying", "-", "flying2", "-"],
             "KeyS": ["flying", "+", "flying2", "+"],
