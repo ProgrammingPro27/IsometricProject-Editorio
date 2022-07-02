@@ -122,7 +122,8 @@ function introAnimation() {
 
 function draw() {
     gameObject.activateStroke = gameObject.ind;
-    ctx.reset();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     view.apply();
     chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
 };
