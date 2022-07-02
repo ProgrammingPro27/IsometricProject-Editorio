@@ -150,8 +150,7 @@ window.addEventListener("keypress", function (e) {
     gameObject.key = e.code;
 });
 window.addEventListener("keydown", function (e) {
-    if (gameObject.flatChunk === true) {
-        let values = returnParameters();
+    if (gameObject.flatChunk == true) {
         let action = {
             "KeyW": ["flying", "-", "flying2", "-"],
             "KeyS": ["flying", "+", "flying2", "+"],
@@ -159,6 +158,7 @@ window.addEventListener("keydown", function (e) {
             "KeyD": ["flying", "-", "flying2", "+"]
         };
         if (action[e.code]) {
+            let values = returnParameters();
             chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, ...action[e.code]);
             gameObject.isActive = true
         };
