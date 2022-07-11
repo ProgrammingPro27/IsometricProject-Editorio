@@ -12,13 +12,11 @@ let gameObject = {
     tileZ: 20,
     x: window.innerWidth / 2,
     y: window.innerHeight / 4,
-    activateStroke: true,
     oldX: 0,
     oldY: 0,
     button: false,
     flatChunk: false,
-    isActive: false,
-    ind: false
+    isActive: false
 };
 
 function returnParameters() {
@@ -90,58 +88,37 @@ function onmousewheel(event) {
     let y = e.offsetY;
     const delta = e.type === "mousewheel" ? e.wheelDelta : -e.detail;
     if (delta > 0) {
-        view.scaleAt({ x, y }, 1.1)
+        view.scaleAt({ x, y }, 1.1);
     }
     else {
-        view.scaleAt({ x, y }, 1 / 1.1)
-    }
-    gameObject.isActive = true
+        view.scaleAt({ x, y }, 1 / 1.1);
+    };
+    gameObject.isActive = true;
     e.preventDefault();
 };
 
-let size = 200;
-let img = new Image();
-img.src = "./newLogo.png";
-let flag = true;
-function introAnimation() {
-    if (flag == true) {
-        requestAnimationFrame(introAnimation);
-        if (size <= 500) {
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, (width / 2) - size / 2, (height / 2) - size / 2, size, size);
-            size += 4;
-        } else {
-            document.getElementById('controlPanelButton').style.display = "block";
-            document.getElementById('controlWindowButton').style.display = "block";
-            document.getElementById("quantity3").dispatchEvent(new Event("input"));
-            flag = false;
-            render();
-        };
-    };
-};
-
-function draw() {
-    gameObject.activateStroke = gameObject.ind;
+setTimeout(function(){
+    document.getElementById("quantity3").dispatchEvent(new Event("input"));
+}, 1000);
+          
+function draw(val) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     view.apply();
-    chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, gameObject.activateStroke, gameObject.key);
+    chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, val, gameObject.key);
 };
 
 function render() {
     requestAnimationFrame(render);
     if (gameObject.isActive == true) {
-        gameObject.ind = false;
-        draw();
+        draw(false);
         window.clearTimeout(gameObject.isScrolling);
-        gameObject.ind = true
         gameObject.isScrolling = setTimeout(draw, 500);
-        gameObject.isActive = false
+        gameObject.isActive = false;
     };
 };
 
-introAnimation();
+render();
 
 window.addEventListener("resize", function () {
     canvas.width = window.innerWidth;
