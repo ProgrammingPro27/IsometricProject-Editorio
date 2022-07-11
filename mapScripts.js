@@ -55,7 +55,7 @@ function updateMap(command) {
         };
         gameObject.isActive = true
     } catch (err) {
-        alert("Invalid Operation!\nMake sure every map option is included!");
+        alert(err);
     };
 };
 
@@ -107,7 +107,8 @@ function introAnimation() {
     if (flag == true) {
         requestAnimationFrame(introAnimation);
         if (size <= 500) {
-            ctx.reset();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, (width / 2) - size / 2, (height / 2) - size / 2, size, size);
             size += 4;
         } else {
