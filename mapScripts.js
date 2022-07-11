@@ -98,6 +98,7 @@ function onmousewheel(event) {
 };
 
 setTimeout(function(){
+    document.body.style.backgroundImage = "none";
     document.getElementById("quantity3").dispatchEvent(new Event("input"));
 }, 1000);
           
