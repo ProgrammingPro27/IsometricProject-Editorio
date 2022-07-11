@@ -19,7 +19,7 @@ Iso3d.prototype.drawCube = function (stroke) {
         el.ctx.lineTo(p7, p8);
         el.ctx.closePath();
         el.ctx.fillStyle = p9;
-        if (stroke === true) {
+        if (stroke == undefined) {
             el.ctx.stroke();
         };
         el.ctx.fill();
