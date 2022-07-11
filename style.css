@@ -3,6 +3,11 @@
     margin:0;           
 }
 body{
+    background-image: url("newLogo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 50vw auto;
     background-color: #DCDCDC;
 }
 ::-webkit-scrollbar {display:none;}
