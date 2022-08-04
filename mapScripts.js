@@ -30,7 +30,7 @@ function returnParameters() {
     };
 };
 
-let chunk = new Chunk();
+let chunk = new Chunk(ctx);
 
 let perlin = new Perlin();
 perlin.seed();
@@ -40,7 +40,7 @@ function updateMap(command) {
         let values = returnParameters();
         if (command == "c1") {
             gameObject.flatChunk = false;
-            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0");
+            chunk.createFlatChunk(gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0");
         };
         if (command == "c2") {
             if (gameObject.flatChunk == true) {
@@ -49,9 +49,9 @@ function updateMap(command) {
         };
         if (command == "c3") {
             gameObject.flatChunk = true;
-            chunk.createFlatChunk(canvas, ctx, gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
+            chunk.createFlatChunk(gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
         };
-        gameObject.isActive = true
+        gameObject.isActive = true;
     } catch (err) {
         alert(err);
     };
@@ -97,11 +97,11 @@ function onmousewheel(event) {
     e.preventDefault();
 };
 
-setTimeout(function(){
+setTimeout(function () {
     document.body.style.backgroundImage = "none";
     document.getElementById("quantity3").dispatchEvent(new Event("input"));
 }, 1000);
-          
+
 function draw(val) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -139,7 +139,7 @@ window.addEventListener("keydown", function (e) {
         if (action[e.code]) {
             let values = returnParameters();
             chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, ...action[e.code]);
-            gameObject.isActive = true
+            gameObject.isActive = true;
         };
     };
 });
