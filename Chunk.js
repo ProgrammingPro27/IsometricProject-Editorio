@@ -1,14 +1,15 @@
-function Chunk() {
+function Chunk(ctx) {
     this.mapData = {};
+    this.ctx = ctx;
     this.flying = 0;
     this.flying2 = 0;
 };
-Chunk.prototype.createFlatChunk = function (canvas, ctx, tileW, tileZ, x, y, mapX, mapY, code) {
+Chunk.prototype.createFlatChunk = function (tileW, tileZ, x, y, mapX, mapY, code) {
     let oriX = x, oriY = y, map = [];
     for (let i = 0; i < mapX; i++) {
         let mapRow = [];
         for (let j = 0; j < mapY; j++) {
-            let isoCube = new Iso3d(canvas, ctx, x, y, tileW, tileZ);
+            let isoCube = new Iso3d(this.ctx, x, y, tileW, tileZ);
             x += tileW;
             y += tileW / 2;
             mapRow[j] = isoCube;
@@ -36,26 +37,24 @@ Chunk.prototype.loadChunk = function (code, mouseX, mouseY, operation, stroke, k
     return this;
 };
 Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, resolution, groundLayers, heightLimit, num, op, num1, op2) {
-if (resolution != 0) {
-    if (num, op) {
-        eval(`this.${num} ${op}= gridSize / resolution`);
-    };
-    if (num1, op2) {
-        eval(`this.${num1} ${op2}= gridSize / resolution`);
-    };
-    let yoff = this.flying2;
-    for (let y = 0; y < size; y++) {
-        let xoff = this.flying;
-        for (let x = 0; x < size; x++) {
-            if (this.mapData[code][x][y]) {
-                let v = parseInt((perlin.get(xoff, yoff) + groundLayers) * heightLimit);    
-                if (v < 0) { v = 0; }
-                this.mapData[code][x][y].h = v;
-            }
-            xoff += gridSize / resolution;
+    if (resolution != 0) {
+        if (num, op) {
+            eval(`this.${num} ${op}= gridSize / resolution`);
         };
-        yoff += gridSize / resolution;
+        if (num1, op2) {
+            eval(`this.${num1} ${op2}= gridSize / resolution`);
+        };
+        let yoff = this.flying2;
+        for (let y = 0; y < size; y++) {
+            let xoff = this.flying;
+            for (let x = 0; x < size; x++) {
+                    let v = parseInt((perlin.get(xoff, yoff) + groundLayers) * heightLimit);
+                    if (v < 0) { v = 0; }
+                    this.mapData[code][x][y].h = v;
+                xoff += gridSize / resolution;
+            };
+            yoff += gridSize / resolution;
+        };
     };
- };
     return this;
 };
