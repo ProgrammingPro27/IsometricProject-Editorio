@@ -9,15 +9,12 @@ Chunk.prototype.createFlatChunk = function (tileW, tileZ, x, y, mapX, mapY, code
     for (let i = 0; i < mapX; i++) {
         let mapRow = [];
         for (let j = 0; j < mapY; j++) {
-            let isoCube = new Iso3d(this.ctx, x, y, tileW, tileZ);
+            mapRow[j] = new Iso3d(this.ctx, x, y, tileW, tileZ);
             x += tileW;
             y += tileW / 2;
-            mapRow[j] = isoCube;
         };
-        oriX -= tileW;
-        oriY += tileW / 2;
-        x = oriX;
-        y = oriY;
+        x = oriX -= tileW;
+        y = oriY += tileW / 2;
         map[i] = mapRow;
     };
     this.mapData[code] = map;
