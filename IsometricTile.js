@@ -34,7 +34,7 @@ Iso3d.prototype.collision = function (mouseX, mouseY) {
     };
     return this;
 };
-Iso3d.prototype.eventInitializer = function (event, map, key) {
+Iso3d.prototype.eventInitializer = function (event, key) {
     let value = this;
     if (value.flag === true) {
         this.ctx.canvas.onclick = function () {
