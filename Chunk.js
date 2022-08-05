@@ -5,7 +5,8 @@ function Chunk(ctx) {
     this.flying2 = 0;
 };
 Chunk.prototype.createFlatChunk = function (tileW, tileZ, x, y, mapX, mapY, code) {
-    let oriX = x, oriY = y, map = [];
+    let oriX = x, oriY = y;
+    this.mapData[code] = [];
     for (let i = 0; i < mapX; i++) {
         let mapRow = [];
         for (let j = 0; j < mapY; j++) {
@@ -15,9 +16,8 @@ Chunk.prototype.createFlatChunk = function (tileW, tileZ, x, y, mapX, mapY, code
         };
         x = oriX -= tileW;
         y = oriY += tileW / 2;
-        map[i] = mapRow;
+        this.mapData[code][i] = mapRow;
     };
-    this.mapData[code] = map;
     return this;
 };
 Chunk.prototype.loadChunk = function (code, mouseX, mouseY, operation, stroke, key) {
