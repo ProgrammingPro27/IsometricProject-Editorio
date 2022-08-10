@@ -120,3 +120,10 @@ input{
     padding: 1vh 1vh 1vh 1vh;
     border-radius: 0.5vw;
 }
+
+#mode {
+    width: 100%;
+    cursor: pointer;
+    font-size: 1.5vw;
+    background-color: #ffa000;
+}
