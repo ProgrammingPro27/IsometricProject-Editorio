@@ -10,7 +10,7 @@ Chunk.prototype.createFlatChunk = function (tileW, tileZ, x, y, mapX, mapY, code
     for (let i = 0; i < mapX; i++) {
         let mapRow = [];
         for (let j = 0; j < mapY; j++) {
-            mapRow[j] = new Iso3d(x, y, tileW, tileZ);
+            mapRow[j] = new Iso3d(x, y, tileW, tileZ).drawCube();
             x += tileW;
             y += tileW / 2;
         };
@@ -20,14 +20,14 @@ Chunk.prototype.createFlatChunk = function (tileW, tileZ, x, y, mapX, mapY, code
     };
     return this;
 };
-Chunk.prototype.loadChunk = function (code, mouseX, mouseY, operation, stroke, key) {
+Chunk.prototype.loadChunk = function (code, mouseX, mouseY, operation, drawRule, key) {
     if (this.mapData[code]) {
         for (let i = 0; i < this.mapData[code].length; i++) {
             for (let j = 0; j < this.mapData[code][i].length; j++) {
-                this.mapData[code][i][j].drawCube(this.ctx, stroke);
                 if (operation) {
-                    this.mapData[code][i][j].collision(this.ctx, mouseX, mouseY).eventInitializer(this.ctx, operation, key);
+                    this.mapData[code][i][j].collision(this.ctx, mouseX, mouseY, operation, key)
                 };
+                this.mapData[code][i][j][drawRule](this.ctx);
             };
         };
     };
@@ -48,6 +48,7 @@ Chunk.prototype.createPerlinChunk = function (size, perlin, code, gridSize, reso
                 let v = parseInt((perlin.get(xoff, yoff) + groundLayers) * heightLimit);
                 if (v < 0) { v = 0; }
                 this.mapData[code][x][y].h = v;
+                this.mapData[code][x][y].drawCube()
                 xoff += gridSize / resolution;
             };
             yoff += gridSize / resolution;
