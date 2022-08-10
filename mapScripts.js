@@ -15,14 +15,13 @@ let gameObject = {
     oldX: 0,
     oldY: 0,
     button: false,
-    flatChunk: false,
     isActive: false
 };
 
 function returnParameters() {
     return {
         flatCoords: Number(document.getElementById("quantity1").value),
-        perlinCoords: Number(document.getElementById("quantity3").value),
+        mapMode: document.getElementById("MapMode").innerText,
         fieldValueGridSize: Number(document.getElementById("gridSize").value),
         fieldValueResolution: Number(document.getElementById("resolution").value),
         fieldValueGroundLayers: Number(document.getElementById("groundLayers").value),
@@ -35,25 +34,20 @@ let chunk = new Chunk(ctx);
 let perlin = new Perlin();
 perlin.seed();
 
-function updateMap(command) {
-    try {
-        let values = returnParameters();
-        if (command == "c1") {
-            gameObject.flatChunk = false;
-            chunk.createFlatChunk(gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.flatCoords, values.flatCoords, "0,0");
-        };
-        if (command == "c2") {
-            if (gameObject.flatChunk == true) {
-                chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
-            };
-        };
-        if (command == "c3") {
-            gameObject.flatChunk = true;
-            chunk.createFlatChunk(gameObject.tileW, gameObject.tileZ, window.innerWidth / 2, window.innerHeight / 4, values.perlinCoords, values.perlinCoords, "0,0").createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
-        };
-        gameObject.isActive = true;
-    } catch (err) {
-        alert(err);
+function updateMap(comm) {
+    let values = returnParameters();
+    gameObject.isActive = true;
+    if (values.mapMode == "Flat") {
+        chunk.createFlatChunk(gameObject.tileW, gameObject.tileZ, gameObject.x, gameObject.y, values.flatCoords, values.flatCoords, "0,0");
+        return;
+    };
+    if (comm == "edit") {
+        chunk.createPerlinChunk(values.flatCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
+        return;
+    };
+    if (comm == "make") {
+        chunk.createFlatChunk(gameObject.tileW, gameObject.tileZ, gameObject.x, gameObject.y, values.flatCoords, values.flatCoords, "0,0").createPerlinChunk(values.flatCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit);
+        return;
     };
 };
 
@@ -99,22 +93,24 @@ function onmousewheel(event) {
 
 setTimeout(function () {
     document.body.style.backgroundImage = "none";
-    document.getElementById("quantity3").dispatchEvent(new Event("input"));
+    updateMap("make");
 }, 1000);
 
-function draw(val) {
+function draw(rule) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     view.apply();
-    chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, val, gameObject.key);
+    chunk.loadChunk(`0,0`, gameObject.mouseCoordinates[0], gameObject.mouseCoordinates[1], gameObject.eventToPut, rule, gameObject.key);
 };
+
+ctx.lineWidth = 0.5;
 
 function render() {
     requestAnimationFrame(render);
     if (gameObject.isActive == true) {
-        draw(false);
+        draw("fillCube");
         window.clearTimeout(gameObject.isScrolling);
-        gameObject.isScrolling = setTimeout(draw, 500);
+        gameObject.isScrolling = setTimeout(function () { draw("fillStrokeCube") }, 500);
         gameObject.isActive = false;
     };
 };
@@ -125,10 +121,11 @@ window.addEventListener("resize", function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     gameObject.isActive = true;
+    ctx.lineWidth = 0.5;
 });
 
 window.addEventListener("keydown", function (e) {
-    if (gameObject.flatChunk == true) {
+    if (document.getElementById("MapMode").innerText == "Perlin") {
         gameObject.key = e.code;
         let action = {
             "KeyW": ["flying", "-", "flying2", "-"],
@@ -138,7 +135,7 @@ window.addEventListener("keydown", function (e) {
         };
         if (action[e.code]) {
             let values = returnParameters();
-            chunk.createPerlinChunk(values.perlinCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, ...action[e.code]);
+            chunk.createPerlinChunk(values.flatCoords, perlin, "0,0", values.fieldValueGridSize, values.fieldValueResolution, values.fieldValueGroundLayers, values.fieldValueHeightLimit, ...action[e.code]);
             gameObject.isActive = true;
         };
     };
