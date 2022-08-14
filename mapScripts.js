@@ -125,8 +125,8 @@ window.addEventListener("resize", function () {
 });
 
 window.addEventListener("keydown", function (e) {
-    if (document.getElementById("MapMode").innerText == "Perlin") {
-        gameObject.key = e.code;
+     gameObject.key = e.code;
+    if (document.getElementById("MapMode").innerText == "Perlin") {     
         let action = {
             "KeyW": ["flying", "-", "flying2", "-"],
             "KeyS": ["flying", "+", "flying2", "+"],
